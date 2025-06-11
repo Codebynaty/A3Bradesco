@@ -1,0 +1,21 @@
+@relation suspect_accounts
+
+@attribute quantidade_denuncias numeric
+@attribute tempo_entre_denuncias numeric
+@attribute frequencia_denuncias numeric
+@attribute quantidade_recebimentos numeric
+@attribute valor_total_recebido numeric
+@attribute tempo_desde_criacao numeric
+@attribute contaSuspeita {true,false}
+
+@data
+5,30,0.167,100,50000,60,true
+2,90,0.022,50,10000,120,false
+10,15,0.667,200,150000,30,true
+1,180,0.006,20,5000,365,false
+8,20,0.400,150,80000,45,true
+3,60,0.050,80,20000,90,false
+15,10,1.500,300,200000,20,true
+4,45,0.089,120,30000,75,false
+12,12,1.000,250,180000,25,true
+2,120,0.017,40,15000,150,false 

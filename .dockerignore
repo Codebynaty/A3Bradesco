@@ -1,0 +1,15 @@
+target/
+logs/
+*.log
+.git/
+README.md
+*.md
+.vscode/
+.settings/
+.project
+.classpath
+*.iml
+.idea/
+node_modules/
+npm-debug.log*
+.DS_Store 

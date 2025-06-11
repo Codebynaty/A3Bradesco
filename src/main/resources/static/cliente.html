@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bradesco - Área PIX</title>
+    <link rel="stylesheet" href="css/cliente.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <!-- Header da Conta -->
+    <header class="account-header">
+        <div class="header-container">
+            <div class="logo-section">
+                <div class="bradesco-logo">
+                    <svg width="140" height="42" viewBox="0 0 140 42" xmlns="http://www.w3.org/2000/svg">
+                        <defs>
+                            <linearGradient id="bradescoGradient" x1="0%" y1="0%" x2="100%" y2="0%">
+                                <stop offset="0%" style="stop-color:#CC092F;stop-opacity:1" />
+                                <stop offset="100%" style="stop-color:#A00724;stop-opacity:1" />
+                            </linearGradient>
+                        </defs>
+                        <rect width="140" height="42" fill="url(#bradescoGradient)" rx="6"/>
+                        <text x="18" y="28" fill="white" font-family="Arial, sans-serif" font-weight="bold" font-size="20">bradesco</text>
+                        <circle cx="125" cy="21" r="8" fill="rgba(255,255,255,0.2)"/>
+                        <rect x="121" y="17" width="8" height="8" fill="white" rx="1"/>
+                    </svg>
+                </div>
+                <div class="account-title">
+                    <h1>Área PIX</h1>
+                    <p>Segurança e praticidade em suas transferências</p>
+                </div>
+            </div>
+            <div class="user-section">
+                <div class="user-info">
+                    <i class="fas fa-user-circle"></i>
+                    <span id="userName">João Silva</span>
+                </div>
+                <button class="logout-btn" onclick="logout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Banking Interface -->
+    <div class="banking-container">
+        <!-- Sidebar Navigation -->
+        <nav class="banking-sidebar">
+            <div class="nav-item active" onclick="showSection('dashboard')">
+                <i class="fas fa-home"></i>
+                <span>Início</span>
+            </div>
+            <div class="nav-item" onclick="showSection('pix')">
+                <i class="fas fa-bolt"></i>
+                <span>PIX</span>
+            </div>
+            <div class="nav-item" onclick="showSection('extratos')">
+                <i class="fas fa-list"></i>
+                <span>Extratos</span>
+            </div>
+            <div class="nav-item" onclick="showSection('seguranca')">
+                <i class="fas fa-shield-alt"></i>
+                <span>Segurança</span>
+            </div>
+        </nav>
+
+        <!-- Main Content Area -->
+        <main class="banking-main">
+            <!-- Dashboard Section -->
+            <section id="dashboard" class="banking-section active">
+                <div class="section-header">
+                    <h2>Olá, João! 👋</h2>
+                    <p>Bem-vindo ao seu banco digital</p>
+                </div>
+
+                <div class="account-summary">
+                    <div class="balance-card">
+                        <div class="balance-header">
+                            <span>Conta Corrente</span>
+                            <i class="fas fa-eye" onclick="toggleBalance()"></i>
+                        </div>
+                        <div class="balance-value" id="balanceValue">
+                            <span class="currency">R$</span>
+                            <span class="amount">2.847,53</span>
+                        </div>
+                        <div class="account-number">Ag: 1234 • CC: 12345-6</div>
+                    </div>
+
+                    <div class="quick-actions">
+                        <div class="action-btn" onclick="showSection('pix')">
+                            <i class="fas fa-bolt"></i>
+                            <span>PIX</span>
+                        </div>
+                        <div class="action-btn" onclick="showPixTransfer()">
+                            <i class="fas fa-exchange-alt"></i>
+                            <span>Transferir</span>
+                        </div>
+                        <div class="action-btn" onclick="showSection('extratos')">
+                            <i class="fas fa-file-alt"></i>
+                            <span>Extrato</span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="recent-transactions">
+                    <h3>Últimas transações</h3>
+                    <div class="transaction-list">
+                        <div class="transaction-item">
+                            <div class="transaction-icon credit">
+                                <i class="fas fa-arrow-down"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-description">PIX Recebido</div>
+                                <div class="transaction-date">Hoje • 14:30</div>
+                            </div>
+                            <div class="transaction-amount credit">+R$ 150,00</div>
+                        </div>
+                        <div class="transaction-item">
+                            <div class="transaction-icon debit">
+                                <i class="fas fa-arrow-up"></i>
+                            </div>
+                            <div class="transaction-details">
+                                <div class="transaction-description">PIX para Maria</div>
+                                <div class="transaction-date">Ontem • 09:15</div>
+                            </div>
+                            <div class="transaction-amount debit">-R$ 80,00</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- PIX Section -->
+            <section id="pix" class="banking-section">
+                <div class="section-header">
+                    <h2>PIX</h2>
+                    <p>Transferências instantâneas 24h</p>
+                </div>
+
+                <div class="pix-options">
+                    <div class="pix-option" onclick="showPixTransfer()">
+                        <i class="fas fa-paper-plane"></i>
+                        <span>Enviar PIX</span>
+                    </div>
+                    <div class="pix-option" onclick="showPixReceive()">
+                        <i class="fas fa-qrcode"></i>
+                        <span>Receber PIX</span>
+                    </div>
+                    <div class="pix-option" onclick="showPixKeys()">
+                        <i class="fas fa-key"></i>
+                        <span>Minhas Chaves</span>
+                    </div>
+                    <div class="pix-option" onclick="showPixHistory()">
+                        <i class="fas fa-history"></i>
+                        <span>Histórico</span>
+                    </div>
+                </div>
+
+                <!-- PIX Transfer Form -->
+                <div id="pixTransferForm" class="pix-form" style="display: none;">
+                    <div class="form-card">
+                        <div class="form-header">
+                            <h3>Enviar PIX</h3>
+                            <button class="close-btn" onclick="hidePixTransfer()">
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+
+                        <form id="pixForm" onsubmit="processPix(event)">
+                            <div class="form-group">
+                                <label>Chave PIX do destinatário</label>
+                                <input type="text" id="pixKey" placeholder="CPF, e-mail, telefone ou chave aleatória" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Valor</label>
+                                <input type="number" id="pixAmount" placeholder="0,00" step="0.01" min="0.01" required>
+                            </div>
+
+                            <div class="form-group">
+                                <label>Descrição (opcional)</label>
+                                <input type="text" id="pixDescription" placeholder="Descrição da transferência">
+                            </div>
+
+                            <button type="submit" class="submit-btn">
+                                <i class="fas fa-bolt"></i>
+                                Enviar PIX
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Security Section -->
+            <section id="seguranca" class="banking-section">
+                <div class="section-header">
+                    <h2>Central de Segurança</h2>
+                    <p>Monitore e proteja sua conta</p>
+                </div>
+
+                <div class="security-dashboard">
+                    <div class="security-score">
+                        <div class="score-header">
+                            <h3>Score de Segurança</h3>
+                            <div class="score-value" id="securityScore">
+                                <span class="score-number">11</span>
+                                <span class="score-total">/100</span>
+                            </div>
+                        </div>
+                        <div class="score-status high-risk" id="scoreStatus">ALTO RISCO</div>
+                        <div class="score-description">
+                            Sua conta apresenta fatores de alto risco. Recomendamos atenção redobrada e verificação de todas as transações.
+                        </div>
+                        <small style="color: var(--bradesco-light-text); margin-top: 1rem; display: block;">
+                            💡 Quanto menor o score, maior o risco de fraude
+                        </small>
+                    </div>
+
+                    <div class="security-alerts">
+                        <h4>Alertas de Segurança</h4>
+                        <div class="alert-item urgent">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <div class="alert-content">
+                                <strong>Transação suspeita detectada</strong>
+                                <small>Hoje • 14:25</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+    <!-- Transaction Blocked Modal -->
+    <div id="blockedModal" class="modal blocked-modal" style="display: none;">
+        <div class="modal-content blocked-content">
+            <div class="blocked-header">
+                <div class="blocked-icon">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h2>Transação Bloqueada</h2>
+                <p>Esta transação foi bloqueada porque apresenta alto risco de fraude</p>
+            </div>
+
+            <div class="risk-alert">
+                <div class="alert-badge">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    Alto Risco Detectado!
+                </div>
+                <p>Por motivos de segurança, esta transação não pode ser processada. É obrigatório reportar esta tentativa para nossa equipe de segurança.</p>
+            </div>
+
+            <div class="security-analysis">
+                <div class="score-section">
+                    <h4>Score de Segurança:</h4>
+                    <div class="score-display">
+                        <span class="score-number">11/100</span>
+                        <span class="risk-level">ALTO RISCO</span>
+                    </div>
+                    <small style="color: var(--bradesco-light-text); display: block; margin-top: 0.5rem;">
+                        ⚠️ Score baixo indica alto risco de fraude
+                    </small>
+                </div>
+
+                <div class="risk-factors">
+                    <h4>Fatores de risco detectados:</h4>
+                    <ul>
+                        <li><i class="fas fa-exclamation-circle"></i> Conta criada recentemente</li>
+                        <li><i class="fas fa-exclamation-circle"></i> Score de risco elevado</li>
+                        <li><i class="fas fa-exclamation-circle"></i> Frequência de denúncias</li>
+                        <li><i class="fas fa-exclamation-circle"></i> Quantidade recebimentos</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="blocked-transaction">
+                <h4>Dados da transação bloqueada:</h4>
+                <div class="transaction-data">
+                    <div class="data-row">
+                        <strong>CPF/CNPJ:</strong> <span id="blockedCpf">***.***.***-**</span>
+                    </div>
+                    <div class="data-row">
+                        <strong>Valor:</strong> <span id="blockedAmount">R$ 0,00</span>
+                    </div>
+                    <div class="data-row">
+                        <strong>Descrição:</strong> <span id="blockedDescription">Teste 2</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="modal-actions">
+                <button class="btn-secondary" onclick="closeBlockedModal()">
+                    Voltar
+                </button>
+                <button class="btn-danger" onclick="reportSuspiciousTransaction()">
+                    Reportar Transação Suspeita
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Modal Modernizado -->
+    <div id="reportModal" class="modal" style="display: none;">
+        <div class="modal-content" style="
+            background: linear-gradient(135deg, #ffffff, #f8f9fa);
+            border-radius: 24px;
+            box-shadow: 
+                0 25px 50px rgba(0, 0, 0, 0.15),
+                0 0 0 1px rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            max-width: 700px;
+            width: 95%;
+            max-height: 95vh;
+            overflow-y: auto;
+            animation: modalSlideIn 0.4s ease;
+        ">
+            <div class="modal-header" style="
+                background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+                color: white;
+                padding: 2rem;
+                border-radius: 24px 24px 0 0;
+                position: relative;
+                overflow: hidden;
+            ">
+                <div style="position: absolute; top: 0; left: 0; right: 0; bottom: 0; opacity: 0.1; background: url('data:image/svg+xml,<svg xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 100 100\"><defs><pattern id=\"grain\" width=\"100\" height=\"100\" patternUnits=\"userSpaceOnUse\"><circle cx=\"25\" cy=\"25\" r=\"1\" fill=\"white\" opacity=\"0.5\"/><circle cx=\"75\" cy=\"75\" r=\"1\" fill=\"white\" opacity=\"0.3\"/><circle cx=\"50\" cy=\"50\" r=\"0.5\" fill=\"white\" opacity=\"0.7\"/></pattern></defs><rect width=\"100\" height=\"100\" fill=\"url(%23grain)\"/></svg>');"></div>
+                <h3 style="
+                    margin: 0;
+                    display: flex;
+                    align-items: center;
+                    font-size: 1.5rem;
+                    font-weight: 700;
+                    position: relative;
+                    z-index: 1;
+                ">
+                    <div style="
+                        width: 50px;
+                        height: 50px;
+                        background: rgba(255, 255, 255, 0.2);
+                        border-radius: 50%;
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        margin-right: 1rem;
+                        backdrop-filter: blur(10px);
+                    ">
+                        <i class="fas fa-shield-alt" style="font-size: 1.2rem;"></i>
+                    </div>
+                    Reportar Atividade Suspeita
+                </h3>
+                <button class="close-btn" onclick="closeReportModal()" style="
+                    position: absolute;
+                    top: 1.5rem;
+                    right: 1.5rem;
+                    background: rgba(255, 255, 255, 0.1);
+                    border: none;
+                    color: rgba(255, 255, 255, 0.8);
+                    width: 40px;
+                    height: 40px;
+                    border-radius: 50%;
+                    cursor: pointer;
+                    transition: all 0.3s ease;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    backdrop-filter: blur(10px);
+                    z-index: 2;
+                " onmouseover="this.style.background='rgba(255, 255, 255, 0.2)'; this.style.transform='scale(1.1)'" 
+                   onmouseout="this.style.background='rgba(255, 255, 255, 0.1)'; this.style.transform='scale(1)'">
+                    <i class="fas fa-times" style="font-size: 1.1rem;"></i>
+                </button>
+            </div>
+
+            <div style="padding: 2rem;">
+                <!-- Indicador de progresso moderno -->
+                <div class="progress-indicator" style="
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    margin-bottom: 2rem;
+                    gap: 1rem;
+                    background: rgba(248, 249, 250, 0.6);
+                    padding: 1rem;
+                    border-radius: 16px;
+                    backdrop-filter: blur(10px);
+                ">
+                    <div class="step-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div class="step active" style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: 700;
+                            font-size: 0.8rem;
+                            box-shadow: 0 4px 12px rgba(204, 9, 47, 0.3);
+                        ">1</div>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--bradesco-red);">Detectar</span>
+                    </div>
+                    <div style="width: 30px; height: 2px; background: linear-gradient(90deg, var(--bradesco-red), #e9ecef);"></div>
+                    <div class="step-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div class="step active" style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+                            color: white;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: 700;
+                            font-size: 0.8rem;
+                            box-shadow: 0 4px 12px rgba(204, 9, 47, 0.3);
+                        ">2</div>
+                        <span style="font-size: 0.85rem; font-weight: 600; color: var(--bradesco-red);">Reportar</span>
+                    </div>
+                    <div style="width: 30px; height: 2px; background: #e9ecef;"></div>
+                    <div class="step-item" style="display: flex; align-items: center; gap: 0.5rem;">
+                        <div class="step" style="
+                            width: 32px;
+                            height: 32px;
+                            border-radius: 50%;
+                            background: #e9ecef;
+                            color: #6c757d;
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            font-weight: 700;
+                            font-size: 0.8rem;
+                        ">3</div>
+                        <span style="font-size: 0.85rem; font-weight: 500; color: #6c757d;">Analisar</span>
+                    </div>
+                </div>
+
+                <form id="reportForm" onsubmit="submitReport(event)">
+                    <!-- Container para o seletor de tipos de golpes -->
+                    <div id="tipoGolpeContainer" class="form-group" style="margin-bottom: 2rem;">
+                        <!-- O seletor será inserido aqui dinamicamente pelo JavaScript -->
+                        <div class="loading-placeholder">
+                            <i class="fas fa-cog fa-spin"></i>
+                            <p>Carregando sistema de denúncias...</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label class="form-label">
+                            <i class="fas fa-file-alt" style="margin-right: 0.5rem; color: var(--bradesco-red);"></i>
+                            Descrição do problema <span class="required">*</span>
+                        </label>
+                        <textarea id="reportDescription" rows="4" 
+                                  placeholder="📝 Descreva detalhadamente o que aconteceu, como foi contatado e por que considera esta transação suspeita..." 
+                                  required style="
+                                      width: 100%;
+                                      padding: 1rem;
+                                      border: 2px solid transparent;
+                                      background: linear-gradient(white, white) padding-box,
+                                                  linear-gradient(135deg, #e9ecef, #f8f9fa) border-box;
+                                      border-radius: 16px;
+                                      font-size: 1rem;
+                                      font-weight: 500;
+                                      transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                                      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+                                      resize: vertical;
+                                      min-height: 120px;
+                                  " onfocus="this.style.background='linear-gradient(white, white) padding-box, linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red)) border-box'; this.style.boxShadow='0 8px 25px rgba(204, 9, 47, 0.15)'; this.style.transform='translateY(-2px)'" 
+                                     onblur="this.style.background='linear-gradient(white, white) padding-box, linear-gradient(135deg, #e9ecef, #f8f9fa) border-box'; this.style.boxShadow='0 4px 12px rgba(0, 0, 0, 0.05)'; this.style.transform='translateY(0)'"></textarea>
+                        <small class="form-help">
+                            <i class="fas fa-info-circle" style="margin-right: 0.25rem;"></i>
+                            Mínimo de 20 caracteres para uma descrição adequada
+                        </small>
+                    </div>
+
+                    <div class="form-group" style="margin-bottom: 2rem;">
+                        <label class="form-label">
+                            <i class="fas fa-phone" style="margin-right: 0.5rem; color: var(--bradesco-red);"></i>
+                            Como foi contatado?
+                        </label>
+                        <div class="checkbox-group" style="
+                            display: grid;
+                            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+                            gap: 1rem;
+                            margin-top: 0.75rem;
+                        ">
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="whatsapp" style="margin-right: 0.5rem;">
+                                📱 WhatsApp
+                            </label>
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="sms" style="margin-right: 0.5rem;">
+                                💬 SMS
+                            </label>
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="phone" style="margin-right: 0.5rem;">
+                                ☎️ Ligação
+                            </label>
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="email" style="margin-right: 0.5rem;">
+                                📧 E-mail
+                            </label>
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="site" style="margin-right: 0.5rem;">
+                                🌐 Site/Link
+                            </label>
+                            <label class="checkbox-item" style="
+                                display: flex;
+                                align-items: center;
+                                padding: 0.75rem 1rem;
+                                background: linear-gradient(135deg, #ffffff, #f8f9fa);
+                                border-radius: 12px;
+                                border: 2px solid #e9ecef;
+                                cursor: pointer;
+                                transition: all 0.3s ease;
+                                font-weight: 500;
+                            " onmouseover="this.style.borderColor='var(--bradesco-red)'; this.style.transform='translateY(-2px)'; this.style.boxShadow='0 4px 12px rgba(204, 9, 47, 0.1)'" 
+                               onmouseout="this.style.borderColor='#e9ecef'; this.style.transform='translateY(0)'; this.style.boxShadow='none'">
+                                <input type="checkbox" name="contactMethod" value="app" style="margin-right: 0.5rem;">
+                                📲 Aplicativo
+                        </label>
+                    </div>
+                </div>
+
+                    <div class="modal-actions" style="
+                        display: flex;
+                        gap: 1rem;
+                        justify-content: flex-end;
+                        margin-top: 2rem;
+                        padding-top: 1.5rem;
+                        border-top: 1px solid rgba(0, 0, 0, 0.1);
+                    ">
+                        <button type="button" class="btn-secondary" onclick="closeReportModal()" style="
+                            padding: 0.75rem 1.5rem;
+                            border: 2px solid #6c757d;
+                            background: transparent;
+                            color: #6c757d;
+                            border-radius: 12px;
+                            font-weight: 600;
+                            transition: all 0.3s ease;
+                            cursor: pointer;
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        " onmouseover="this.style.background='#6c757d'; this.style.color='white'; this.style.transform='translateY(-2px)'" 
+                           onmouseout="this.style.background='transparent'; this.style.color='#6c757d'; this.style.transform='translateY(0)'">
+                            <i class="fas fa-times"></i>
+                        Cancelar
+                    </button>
+                        <button type="submit" class="btn-primary" style="
+                            padding: 0.75rem 2rem;
+                            background: linear-gradient(135deg, var(--bradesco-red), var(--bradesco-dark-red));
+                            border: none;
+                            color: white;
+                            border-radius: 12px;
+                            font-weight: 700;
+                            transition: all 0.3s ease;
+                            cursor: pointer;
+                            box-shadow: 0 4px 15px rgba(204, 9, 47, 0.3);
+                            display: flex;
+                            align-items: center;
+                            gap: 0.5rem;
+                        " onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 8px 25px rgba(204, 9, 47, 0.4)'" 
+                           onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 4px 15px rgba(204, 9, 47, 0.3)'">
+                        <i class="fas fa-paper-plane"></i>
+                        Enviar Denúncia
+                    </button>
+                </div>
+            </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- PIX Success Modal -->
+    <div id="pixSuccessModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon" style="color: #28a745;">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h3 id="pixSuccessTitle">PIX Realizado com Sucesso!</h3>
+            </div>
+            <div class="modal-body">
+                <p id="pixSuccessMessage">Sua transferência foi processada com sucesso.</p>
+                <div class="protocol-number" id="pixProtocolNumber">TXN12345</div>
+                <p id="pixSuccessSubMessage">A transferência foi registrada no sistema.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closePixSuccessModal()">
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Report Success Modal -->
+    <div id="reportSuccessModal" class="modal" style="display: none;">
+        <div class="modal-content">
+            <div class="modal-header">
+                <div class="success-icon" style="color: #007bff;">
+                    <i class="fas fa-shield-alt"></i>
+                </div>
+                <h3>Denúncia Enviada!</h3>
+            </div>
+            <div class="modal-body">
+                <p>Sua denúncia foi registrada com sucesso.</p>
+                <div class="protocol-number" id="reportProtocolNumber">D0123</div>
+                <p>Nossa equipe analisará o caso em até 24 horas.</p>
+            </div>
+            <div class="modal-actions">
+                <button class="btn-primary" onclick="closeReportSuccessModal()">
+                    Entendi
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bino Assistente -->
+    <div id="binoAssistant" class="bino-assistant">
+        <div class="bino-speech-bubble">
+            <p>👋 Oi! Eu sou o Bino e vou cuidar da sua segurança!</p>
+            <div class="bubble-arrow"></div>
+        </div>
+        <div class="bino-image">
+            <img src="images/bino-avatar.png" alt="Bino Assistente" class="bino-avatar-img" id="binoImage">
+        </div>
+    </div>
+
+    <script>
+        // 🚀 SISTEMA EXTREMAMENTE PERFEITO DE CARREGAMENTO DO BINO
+        document.addEventListener('DOMContentLoaded', function() {
+            const binoImage = document.getElementById('binoImage');
+            
+            // 🎯 PRIORIDADE: PNG > JPG (melhor qualidade)
+            const imagePaths = [
+                'images/bino-avatar.png',    // ✅ Disponível - PNG alta qualidade
+                'images/bino-novo.png',      // Backup PNG
+                'images/bino-avatar.jpg',    // ✅ Disponível - JPG boa qualidade  
+                'images/bino-novo.jpg',      // ✅ Disponível - JPG backup
+                'images/bino_novo.jpg',      // Underscore variant
+                'images/bino_novo.png',      // Underscore PNG
+                'images/bino.png',           // Nome simples
+                'images/bino.jpg'            // Nome simples JPG
+            ];
+            
+            let currentIndex = 0;
+            let loadStartTime = performance.now();
+            
+            function tryNextImage() {
+                if (currentIndex < imagePaths.length - 1) {
+                    currentIndex++;
+                    const nextPath = imagePaths[currentIndex];
+                    console.log(`⚡ Tentativa ${currentIndex + 1}/${imagePaths.length}: ${nextPath}`);
+                    binoImage.src = nextPath;
+                } else {
+                    console.log('🛑 Sistema de fallback: usando avatar emoji perfeitamente estilizado');
+                    createEmojiAvatar();
+                }
+            }
+            
+                         function createEmojiAvatar() {
+                 binoImage.style.display = 'none';
+                 const emojiAvatar = document.createElement('div');
+                 emojiAvatar.className = 'bino-avatar-img';
+                 emojiAvatar.style.cssText = `
+                     display: flex;
+                     align-items: center;
+                     justify-content: center;
+                     font-size: 35px;
+                     width: 100%;
+                     height: 100%;
+                     background: linear-gradient(135deg, #FF6B6B, #4ECDC4);
+                     border-radius: 50%;
+                     color: white;
+                     text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+                     position: absolute;
+                     top: 0;
+                     left: 0;
+                     object-fit: cover;
+                     object-position: center;
+                     overflow: hidden;
+                 `;
+                 emojiAvatar.innerHTML = '🛡️';
+                 binoImage.parentElement.appendChild(emojiAvatar);
+             }
+            
+            // 🔥 EVENTOS OTIMIZADOS
+            binoImage.onerror = function() {
+                const failedPath = this.src;
+                console.log(`❌ Falha ao carregar: ${failedPath.split('/').pop()}`);
+                tryNextImage();
+            };
+            
+            binoImage.onload = function() {
+                const loadTime = Math.round(performance.now() - loadStartTime);
+                const imageName = this.src.split('/').pop();
+                const imageSize = this.naturalWidth + 'x' + this.naturalHeight;
+                
+                console.log(`🎉 SUCESSO! Bino carregado perfeitamente:`);
+                console.log(`   📷 Imagem: ${imageName}`);
+                console.log(`   📐 Resolução: ${imageSize}px`);
+                console.log(`   ⚡ Tempo: ${loadTime}ms`);
+                console.log(`   🚀 Performance: ${loadTime < 100 ? 'EXCELENTE' : loadTime < 300 ? 'ÓTIMA' : 'BOA'}`);
+                
+                // ✨ EFEITO VISUAL DE SUCESSO
+                this.style.animation = 'none';
+                setTimeout(() => {
+                    this.style.animation = 'binoLoadSuccess 0.6s ease-out';
+                }, 10);
+            };
+            
+            // 🎯 INÍCIO INTELIGENTE
+            const preferredImage = imagePaths[0]; // Começar com a melhor qualidade
+            console.log(`🚀 INICIANDO SISTEMA PERFEITO DO BINO`);
+            console.log(`🎯 Imagem preferencial: ${preferredImage}`);
+            console.log(`📊 ${imagePaths.length} opções disponíveis`);
+            
+            binoImage.src = preferredImage;
+        });
+        
+        // 🎨 CSS DINÂMICO PARA ANIMAÇÃO DE SUCESSO
+        const successAnimation = document.createElement('style');
+        successAnimation.textContent = `
+            @keyframes binoLoadSuccess {
+                0% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+                50% { transform: scale(1.1) rotate(5deg); filter: brightness(1.2); }
+                100% { transform: scale(1) rotate(0deg); filter: brightness(1); }
+            }
+        `;
+        document.head.appendChild(successAnimation);
+    </script>
+    <script src="js/cliente.js"></script>
+</body>
+</html> 

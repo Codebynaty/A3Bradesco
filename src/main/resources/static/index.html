@@ -1,0 +1,358 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bradesco PIX Monitor - Sistema Anti-Fraude</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p>Carregando...</p>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <!-- Header -->
+        <header class="main-header">
+            <div class="header-content">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <svg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg">
+                            <defs>
+                                <linearGradient id="bradescoGradientMain" x1="0%" y1="0%" x2="100%" y2="100%">
+                                    <stop offset="0%" style="stop-color:#CC092F;stop-opacity:1" />
+                                    <stop offset="100%" style="stop-color:#A00724;stop-opacity:1" />
+                                </linearGradient>
+                            </defs>
+                            <circle cx="30" cy="30" r="28" fill="url(#bradescoGradientMain)"/>
+                            <text x="30" y="37" text-anchor="middle" fill="white" font-family="Arial, sans-serif" font-weight="bold" font-size="11">B</text>
+                        </svg>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Bradesco PIX Monitor</h1>
+                        <p>Sistema de Segurança e Anti-Fraude</p>
+                    </div>
+                </div>
+                <div class="security-badge">
+                    <i class="fas fa-lock"></i>
+                    <span>Conexão Segura</span>
+                </div>
+            </div>
+        </header>
+
+        <!-- Hero Section with Login -->
+        <section class="hero-section">
+            <div class="hero-background">
+                <div class="hero-pattern"></div>
+            </div>
+            
+            <div class="hero-content">
+                <div class="hero-left">
+                    <div class="hero-info">
+                        <h2>Proteja suas transações PIX com Inteligência Artificial</h2>
+                        <p>Sistema avançado de monitoramento e detecção de fraudes em tempo real para garantir a segurança de suas operações PIX.</p>
+                        
+                        <div class="hero-features">
+                            <div class="feature-item">
+                                <i class="fas fa-brain"></i>
+                                <div>
+                                    <h4>Inteligência Artificial</h4>
+                                    <p>Detecção automática de padrões suspeitos</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-clock"></i>
+                                <div>
+                                    <h4>Monitoramento 24/7</h4>
+                                    <p>Vigilância contínua das transações</p>
+                                </div>
+                            </div>
+                            <div class="feature-item">
+                                <i class="fas fa-shield-alt"></i>
+                                <div>
+                                    <h4>99.8% de Precisão</h4>
+                                    <p>Tecnologia de ponta em segurança</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="hero-right">
+                    <div class="login-container">
+                        <div class="login-header">
+                            <h3>Acesso ao Sistema</h3>
+                            <p>Selecione seu portal de acesso</p>
+                        </div>
+
+                        <div class="portal-tabs">
+                            <button class="tab-btn active" onclick="switchTab('cliente')" data-tab="cliente">
+                                <i class="fas fa-user"></i>
+                                Cliente
+                            </button>
+                            <button class="tab-btn" onclick="switchTab('funcionario')" data-tab="funcionario">
+                                <i class="fas fa-user-tie"></i>
+                                Funcionário
+                            </button>
+                        </div>
+
+                        <!-- Login Cliente -->
+                        <div class="tab-content active" id="tab-cliente">
+                            <form class="login-form" id="clienteForm" onsubmit="loginCliente(event)">
+                                <div class="form-group">
+                                    <label for="clienteCpf">CPF</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-id-card"></i>
+                                        <input type="text" id="clienteCpf" placeholder="000.000.000-00" 
+                                               maxlength="14" onkeyup="formatCPF(this)" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="clienteEmail">E-mail</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-envelope"></i>
+                                        <input type="email" id="clienteEmail" placeholder="seu@email.com" required>
+                                    </div>
+                                </div>
+
+                                <button type="submit" class="login-btn">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Acessar Portal do Cliente
+                                </button>
+                            </form>
+
+                            <div class="portal-info">
+                                <h4>Portal do Cliente</h4>
+                                <ul>
+                                    <li><i class="fas fa-exclamation-triangle"></i> Denunciar transações suspeitas</li>
+                                    <li><i class="fas fa-search"></i> Consultar status das denúncias</li>
+                                    <li><i class="fas fa-history"></i> Histórico de operações</li>
+                                </ul>
+                            </div>
+                        </div>
+
+                        <!-- Login Funcionário -->
+                        <div class="tab-content" id="tab-funcionario">
+                            <form class="login-form" id="funcionarioForm" onsubmit="loginFuncionario(event)">
+                                <div class="form-group">
+                                    <label for="funcionarioMatricula">Matrícula</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-id-badge"></i>
+                                        <input type="text" id="funcionarioMatricula" placeholder="Matrícula" required>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="funcionarioSenha">Senha</label>
+                                    <div class="input-group">
+                                        <i class="fas fa-lock"></i>
+                                        <input type="password" id="funcionarioSenha" placeholder="Senha" required>
+                                        <button type="button" class="toggle-password" onclick="togglePassword('funcionarioSenha')">
+                                            <i class="fas fa-eye"></i>
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="form-options">
+                                    <label class="checkbox-label">
+                                        <input type="checkbox" id="rememberMe">
+                                        <span class="checkmark"></span>
+                                        Lembrar-me
+                                    </label>
+                                    <a href="#" class="forgot-link">Esqueci minha senha</a>
+                                </div>
+
+                                <button type="submit" class="login-btn">
+                                    <i class="fas fa-sign-in-alt"></i>
+                                    Acessar Portal do Funcionário
+                                </button>
+                            </form>
+
+                            <div class="portal-info">
+                                <h4>Portal do Funcionário</h4>
+                                <ul>
+                                    <li><i class="fas fa-chart-line"></i> Dashboard de monitoramento</li>
+                                    <li><i class="fas fa-cogs"></i> Gestão de denúncias</li>
+                                    <li><i class="fas fa-brain"></i> Análise com IA</li>
+                                    <li><i class="fas fa-users"></i> Controle de contas suspeitas</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Stats Section -->
+        <section class="stats-section">
+            <div class="stats-container">
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="transacoes-protegidas">2.5M+</h3>
+                        <p>Transações Protegidas</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="fraudes-bloqueadas">15.2K</h3>
+                        <p>Fraudes Bloqueadas</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="tempo-resposta">1.8s</h3>
+                        <p>Tempo de Resposta</p>
+                    </div>
+                </div>
+                
+                <div class="stat-card">
+                    <div class="stat-icon">
+                        <i class="fas fa-percentage"></i>
+                    </div>
+                    <div class="stat-content">
+                        <h3 id="precisao-ia">99.8%</h3>
+                        <p>Precisão da IA</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Features Section -->
+        <section class="features-section">
+            <div class="features-container">
+                <h2>Como Funciona Nosso Sistema</h2>
+                <div class="features-grid">
+                    <div class="feature-card">
+                        <div class="feature-number">1</div>
+                        <div class="feature-icon">
+                            <i class="fas fa-search"></i>
+                        </div>
+                        <h3>Monitoramento</h3>
+                        <p>Análise contínua de todas as transações PIX em tempo real</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">2</div>
+                        <div class="feature-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <h3>Detecção IA</h3>
+                        <p>Algoritmos de machine learning identificam padrões suspeitos</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">3</div>
+                        <div class="feature-icon">
+                            <i class="fas fa-exclamation-triangle"></i>
+                        </div>
+                        <h3>Alerta Imediato</h3>
+                        <p>Notificação instantânea sobre atividades suspeitas</p>
+                    </div>
+
+                    <div class="feature-card">
+                        <div class="feature-number">4</div>
+                        <div class="feature-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h3>Bloqueio Seguro</h3>
+                        <p>Proteção automática contra transações fraudulentas</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Status Section -->
+        <section class="status-section">
+            <div class="status-container">
+                <h3>Status do Sistema</h3>
+                <div class="status-grid">
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-server"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">API Principal</span>
+                            <span class="status-indicator online" id="api-status">Online</span>
+                        </div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-database"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Base de Dados</span>
+                            <span class="status-indicator online" id="db-status">Operacional</span>
+                        </div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-brain"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Sistema IA</span>
+                            <span class="status-indicator online" id="ia-status">Ativo</span>
+                        </div>
+                    </div>
+
+                    <div class="status-item">
+                        <div class="status-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <div class="status-info">
+                            <span class="status-label">Segurança</span>
+                            <span class="status-indicator online" id="security-status">Protegido</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <div class="footer-logo">
+                    <img src="https://logodownload.org/wp-content/uploads/2014/07/bradesco-logo-0.png" alt="Bradesco">
+                    <span>PIX Monitor</span>
+                </div>
+                <p>&copy; 2024 Banco Bradesco S.A. Todos os direitos reservados.</p>
+                <p>Sistema de segurança e monitoramento PIX</p>
+            </div>
+            <div class="footer-right">
+                <div class="footer-links">
+                    <a href="#" class="footer-link">Política de Privacidade</a>
+                    <a href="#" class="footer-link">Termos de Uso</a>
+                    <a href="#" class="footer-link">Central de Ajuda</a>
+                    <a href="/h2-console" class="footer-link" target="_blank">Console Admin</a>
+                </div>
+                <div class="footer-contact">
+                    <p><i class="fas fa-phone"></i> 0800 123 4567</p>
+                    <p><i class="fas fa-envelope"></i> suporte@bradesco.com.br</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+</body>
+</html> 

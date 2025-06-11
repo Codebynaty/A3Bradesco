@@ -1,0 +1,11 @@
+[build]
+builder = "nixpacks"
+
+[deploy]
+healthcheckPath = "/actuator/health"
+healthcheckTimeout = 300
+restartPolicyType = "on_failure"
+
+[env]
+SPRING_PROFILES_ACTIVE = "prod"
+NIXPACKS_JDK_VERSION = "17" 

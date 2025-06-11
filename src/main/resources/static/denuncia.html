@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Fazer Denúncia - Bradesco PIX</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <div class="logo">
+                <img src="img/bradesco-logo.png" alt="Bradesco">
+            </div>
+            <nav>
+                <button onclick="window.location.href='index.html'" class="btn btn-outline">Voltar</button>
+                <button onclick="window.location.href='admin.html'" class="btn btn-outline">Área Administrativa</button>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="card">
+                <h1>Fazer Denúncia</h1>
+                <form id="denunciaForm">
+                    <div class="form-group">
+                        <label for="tipoTransacao">Tipo de Transação</label>
+                        <select id="tipoTransacao" name="tipoTransacao" required>
+                            <option value="">Selecione o tipo</option>
+                            <option value="PIX">PIX</option>
+                            <option value="TED">TED</option>
+                            <option value="DOC">DOC</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="contaId">ID da Conta</label>
+                        <input type="text" id="contaId" name="contaId" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="valorTransacao">Valor da Transação (R$)</label>
+                        <input type="text" id="valorTransacao" name="valorTransacao" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="dataHora">Data e Hora</label>
+                        <input type="datetime-local" id="dataHora" name="dataHora" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="descricao">Descrição da Denúncia</label>
+                        <textarea id="descricao" name="descricao" rows="4" required></textarea>
+                    </div>
+
+                    <div id="suspicionResult" class="alert" style="display: none;"></div>
+                    <div id="success-message" class="alert alert-success" style="display: none;"></div>
+                    <div id="error-message" class="alert alert-error" style="display: none;"></div>
+
+                    <button type="submit" class="btn btn-primary">Enviar Denúncia</button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2024 Bradesco. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+
+    <script src="js/common.js"></script>
+    <script>
+        document.getElementById('denunciaForm').addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const formData = {
+                tipoTransacao: document.getElementById('tipoTransacao').value,
+                contaId: document.getElementById('contaId').value,
+                valorTransacao: document.getElementById('valorTransacao').value,
+                dataHora: document.getElementById('dataHora').value,
+                descricao: document.getElementById('descricao').value
+            };
+
+            try {
+                // Primeiro, verifica se a conta é suspeita
+                const suspicionData = {
+                    quantidadeDenuncias: 1, // Valor inicial para nova denúncia
+                    tempoEntreDenuncias: 1,
+                    frequenciaDenuncias: 1.0,
+                    quantidadeRecebimentos: 1,
+                    valorTotalRecebido: parseFloat(formData.valorTransacao.replace(/[^\d,-]/g, '').replace(',', '.')),
+                    tempoDesdeCriacao: 1
+                };
+
+                const suspicionResponse = await fetch('/api/predict-suspicion', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(suspicionData)
+                });
+
+                const suspicionResult = await suspicionResponse.json();
+                const suspicionDiv = document.getElementById('suspicionResult');
+                
+                if (suspicionResult.contaSuspeita) {
+                    suspicionDiv.className = 'alert alert-warning';
+                    suspicionDiv.textContent = '⚠️ ' + suspicionResult.mensagem;
+                } else {
+                    suspicionDiv.className = 'alert alert-info';
+                    suspicionDiv.textContent = 'ℹ️ ' + suspicionResult.mensagem;
+                }
+                suspicionDiv.style.display = 'block';
+
+                // Continua com o envio da denúncia
+                const response = await fetch('/api/denuncias', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                });
+
+                if (response.ok) {
+                    mostrarMensagemSucesso('Denúncia registrada com sucesso!');
+                    this.reset();
+                } else {
+                    const error = await response.json();
+                    mostrarMensagemErro(error.message || 'Erro ao registrar denúncia');
+                }
+            } catch (error) {
+                mostrarMensagemErro('Erro ao processar a denúncia: ' + error.message);
+            }
+        });
+
+        // Formatação do campo de valor
+        document.getElementById('valorTransacao').addEventListener('input', function(e) {
+            let value = e.target.value.replace(/\D/g, '');
+            value = (parseInt(value) / 100).toFixed(2);
+            e.target.value = value;
+        });
+    </script>
+</body>
+</html> 

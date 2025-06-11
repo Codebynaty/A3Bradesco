@@ -1,0 +1,530 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portal do Funcionário - Bradesco PIX Monitor</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/funcionario.css">
+</head>
+<body>
+    <!-- Loading Overlay -->
+    <div id="loadingOverlay" class="loading-overlay hidden">
+        <div class="loading-content">
+            <div class="spinner"></div>
+            <p id="loadingMessage">Carregando...</p>
+        </div>
+    </div>
+
+    <!-- Sistema de Notificações -->
+    <div id="notificationContainer" class="notification-container"></div>
+
+    <!-- Header Principal -->
+    <header class="main-header">
+        <div class="header-content">
+            <div class="header-left">
+                <div class="logo-section">
+                    <div class="logo-container">
+                        <i class="fas fa-shield-alt"></i>
+                    </div>
+                    <div class="brand-text">
+                        <h1>Bradesco PIX Monitor</h1>
+                        <span class="subtitle">Portal do Funcionário</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-center">
+                <div class="search-container">
+                    <div class="search-input-wrapper">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="globalSearch" placeholder="Buscar por CPF, protocolo ou nome...">
+                        <button type="button" id="clearSearch" class="clear-search hidden">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="header-right">
+                <div class="system-status">
+                    <div class="status-indicator" id="systemStatus">
+                        <i class="fas fa-circle"></i>
+                        <span>Sistema Online</span>
+                    </div>
+                </div>
+                
+                <div class="notifications-bell">
+                    <button class="notification-btn" onclick="toggleNotifications()">
+                        <i class="fas fa-bell"></i>
+                        <span class="notification-badge" id="notificationBadge">3</span>
+                    </button>
+                    <div class="notifications-dropdown" id="notificationsDropdown">
+                        <div class="notifications-header">
+                            <h4>Notificações</h4>
+                            <button class="mark-all-read">Marcar todas como lidas</button>
+                        </div>
+                        <div class="notifications-list" id="notificationsList">
+                            <!-- Notificações serão carregadas dinamicamente -->
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="user-menu">
+                    <div class="user-avatar" onclick="toggleUserMenu()">
+                        <i class="fas fa-user-tie"></i>
+                        <span class="user-name">João Silva</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                    <div class="user-dropdown" id="userDropdown">
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-user"></i> Meu Perfil
+                        </a>
+                        <a href="#" class="dropdown-item">
+                            <i class="fas fa-cog"></i> Configurações
+                        </a>
+                        <hr class="dropdown-divider">
+                        <a href="index.html" class="dropdown-item">
+                            <i class="fas fa-sign-out-alt"></i> Sair
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar" id="sidebar">
+        <nav class="sidebar-nav">
+            <div class="nav-section">
+                <h3>Principal</h3>
+                <a href="#dashboard" class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    <span>Dashboard</span>
+                    <div class="nav-indicator"></div>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Gestão</h3>
+                <a href="#denuncias" class="nav-item" data-section="denuncias">
+                    <i class="fas fa-exclamation-triangle"></i>
+                    <span>Denúncias</span>
+                    <span class="nav-badge" id="denunciasBadge">12</span>
+                </a>
+                
+                <a href="#contas" class="nav-item" data-section="contas">
+                    <i class="fas fa-users"></i>
+                    <span>Contas Suspeitas</span>
+                    <span class="nav-badge warning" id="contasBadge">5</span>
+                </a>
+                
+                <a href="#transacoes" class="nav-item" data-section="transacoes">
+                    <i class="fas fa-exchange-alt"></i>
+                    <span>Transações</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Análise</h3>
+                <a href="#ia" class="nav-item" data-section="ia">
+                    <i class="fas fa-brain"></i>
+                    <span>Análise com IA</span>
+                </a>
+                
+                <a href="#relatorios" class="nav-item" data-section="relatorios">
+                    <i class="fas fa-chart-bar"></i>
+                    <span>Relatórios</span>
+                </a>
+            </div>
+            
+            <div class="nav-section">
+                <h3>Sistema</h3>
+                <a href="#configuracoes" class="nav-item" data-section="configuracoes">
+                    <i class="fas fa-cog"></i>
+                    <span>Configurações</span>
+                </a>
+                
+                <a href="#logs" class="nav-item" data-section="logs">
+                    <i class="fas fa-clipboard-list"></i>
+                    <span>Logs do Sistema</span>
+                </a>
+            </div>
+        </nav>
+        
+        <div class="sidebar-footer">
+            <div class="sidebar-toggle" onclick="toggleSidebar()">
+                <i class="fas fa-chevron-left"></i>
+            </div>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content" id="mainContent">
+        <!-- Dashboard Section -->
+        <section id="dashboard-section" class="content-section active">
+            <div class="section-header">
+                <h2>Dashboard de Monitoramento</h2>
+                <div class="section-actions">
+                    <button class="btn-secondary" onclick="refreshDashboard()">
+                        <i class="fas fa-sync-alt"></i> Atualizar
+                    </button>
+                    <button class="btn-primary" onclick="openQuickAction()">
+                        <i class="fas fa-plus"></i> Ação Rápida
+                    </button>
+                </div>
+            </div>
+
+            <!-- Métricas Principais -->
+            <div class="metrics-grid">
+                <div class="metric-card primary">
+                    <div class="metric-icon">
+                        <i class="fas fa-exclamation-triangle"></i>
+                    </div>
+                    <div class="metric-content">
+                        <span class="metric-label">Denúncias Hoje</span>
+                        <span class="metric-value" id="denunciasHoje">--</span>
+                        <span class="metric-change positive">+12%</span>
+                    </div>
+                    <div class="metric-chart">
+                        <canvas id="denunciasChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="metric-card warning">
+                    <div class="metric-icon">
+                        <i class="fas fa-ban"></i>
+                    </div>
+                    <div class="metric-content">
+                        <span class="metric-label">Contas Bloqueadas</span>
+                        <span class="metric-value" id="contasBloqueadas">--</span>
+                        <span class="metric-change negative">-5%</span>
+                    </div>
+                    <div class="metric-chart">
+                        <canvas id="bloqueiosChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="metric-card success">
+                    <div class="metric-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <div class="metric-content">
+                        <span class="metric-label">Taxa Detecção IA</span>
+                        <span class="metric-value" id="taxaDeteccao">--</span>
+                        <span class="metric-change positive">+2.1%</span>
+                    </div>
+                    <div class="metric-chart">
+                        <canvas id="iaChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="metric-card info">
+                    <div class="metric-icon">
+                        <i class="fas fa-clock"></i>
+                    </div>
+                    <div class="metric-content">
+                        <span class="metric-label">Tempo Médio Análise</span>
+                        <span class="metric-value" id="tempoAnalise">--</span>
+                        <span class="metric-change positive">-8%</span>
+                    </div>
+                    <div class="metric-chart">
+                        <canvas id="tempoChart"></canvas>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Gráficos Principais -->
+            <div class="charts-grid">
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Denúncias por Período</h3>
+                        <div class="chart-controls">
+                            <select id="periodSelector" onchange="updatePeriodChart()">
+                                <option value="24h">Últimas 24h</option>
+                                <option value="7d">Últimos 7 dias</option>
+                                <option value="30d">Últimos 30 dias</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="denunciasPeriodoChart"></canvas>
+                    </div>
+                </div>
+
+                <div class="chart-card">
+                    <div class="chart-header">
+                        <h3>Tipos de Fraude</h3>
+                        <div class="chart-controls">
+                            <button class="chart-toggle active" data-type="doughnut">
+                                <i class="fas fa-chart-pie"></i>
+                            </button>
+                            <button class="chart-toggle" data-type="bar">
+                                <i class="fas fa-chart-bar"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="chart-content">
+                        <canvas id="tiposFraudeChart"></canvas>
+                    </div>
+                    <div class="chart-legend" id="fraudeLegend"></div>
+                </div>
+            </div>
+
+            <!-- Alertas e Ações Recentes -->
+            <div class="dashboard-lower">
+                <div class="alerts-panel">
+                    <div class="panel-header">
+                        <h3>Alertas Urgentes</h3>
+                        <span class="alert-count" id="alertCount">3</span>
+                    </div>
+                    <div class="alerts-list" id="alertsList">
+                        <!-- Alertas serão carregados dinamicamente -->
+                    </div>
+                </div>
+
+                <div class="recent-activities">
+                    <div class="panel-header">
+                        <h3>Atividades Recentes</h3>
+                        <a href="#logs" class="view-all">Ver todas</a>
+                    </div>
+                    <div class="activities-list" id="activitiesList">
+                        <!-- Atividades serão carregadas dinamicamente -->
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Denúncias Section -->
+        <section id="denuncias-section" class="content-section">
+            <div class="section-header">
+                <h2>Gestão de Denúncias</h2>
+                <div class="section-actions">
+                    <button class="btn-secondary" onclick="exportDenuncias()">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <button class="btn-primary" onclick="novaDenuncia()">
+                        <i class="fas fa-plus"></i> Nova Denúncia
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros de Denúncias -->
+            <div class="filters-panel">
+                <div class="filter-group">
+                    <label for="statusFilter">Status:</label>
+                    <select id="statusFilter" onchange="applyFilters()">
+                        <option value="">Todos</option>
+                        <option value="PENDENTE">Pendente</option>
+                        <option value="EM_ANALISE">Em Análise</option>
+                        <option value="RESOLVIDA">Resolvida</option>
+                        <option value="ARQUIVADA">Arquivada</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="dataInicio">Data Início:</label>
+                    <input type="date" id="dataInicio" onchange="applyFilters()">
+                </div>
+
+                <div class="filter-group">
+                    <label for="dataFim">Data Fim:</label>
+                    <input type="date" id="dataFim" onchange="applyFilters()">
+                </div>
+
+                <div class="filter-group">
+                    <label for="buscaDenuncia">Buscar:</label>
+                    <input type="text" id="buscaDenuncia" placeholder="Protocolo, CPF ou nome..."
+                           onkeyup="searchDenuncias(this.value)">
+                </div>
+
+                <button class="btn-secondary" onclick="clearFilters()">
+                    <i class="fas fa-times"></i> Limpar
+                </button>
+            </div>
+
+            <!-- Tabela de Denúncias -->
+            <div class="table-container">
+                <table class="data-table" id="denunciasTable">
+                    <thead>
+                        <tr>
+                            <th>Protocolo</th>
+                            <th>Data</th>
+                            <th>Cliente</th>
+                            <th>Motivo</th>
+                            <th>Status</th>
+                            <th>Funcionário</th>
+                            <th>Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="denunciasTableBody">
+                        <!-- Dados serão carregados dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Paginação -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Mostrando <span id="denunciasRange">0-0</span> de <span id="denunciasTotal">0</span> denúncias
+                </div>
+                <div class="pagination-controls" id="denunciasPagination">
+                    <!-- Controles de paginação serão gerados dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Contas Suspeitas Section -->
+        <section id="contas-section" class="content-section">
+            <div class="section-header">
+                <h2>Contas Suspeitas</h2>
+                <div class="section-actions">
+                    <button class="btn-secondary" onclick="exportContas()">
+                        <i class="fas fa-download"></i> Exportar
+                    </button>
+                    <button class="btn-warning" onclick="bloquearEmMassa()">
+                        <i class="fas fa-ban"></i> Bloqueio em Massa
+                    </button>
+                </div>
+            </div>
+
+            <!-- Filtros de Contas -->
+            <div class="filters-panel">
+                <div class="filter-group">
+                    <label for="riskLevel">Nível de Risco:</label>
+                    <select id="riskLevel" onchange="applyContasFilters()">
+                        <option value="">Todos</option>
+                        <option value="ALTO">Alto</option>
+                        <option value="MEDIO">Médio</option>
+                        <option value="BAIXO">Baixo</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="contaStatus">Status:</label>
+                    <select id="contaStatus" onchange="applyContasFilters()">
+                        <option value="">Todos</option>
+                        <option value="NORMAL">Normal</option>
+                        <option value="MONITORADA">Monitorada</option>
+                        <option value="BLOQUEADA">Bloqueada</option>
+                    </select>
+                </div>
+
+                <div class="filter-group">
+                    <label for="scoreRange">Score Min:</label>
+                    <input type="range" id="scoreRange" min="0" max="100" value="0" 
+                           onchange="updateScoreFilter(this.value)">
+                    <span id="scoreValue">0</span>
+                </div>
+
+                <div class="filter-group">
+                    <label for="buscaConta">Buscar:</label>
+                    <input type="text" id="buscaConta" placeholder="Nome ou CPF..."
+                           onkeyup="searchContas(this.value)">
+                </div>
+            </div>
+
+            <!-- Cards de Contas -->
+            <div class="contas-grid" id="contasGrid">
+                <!-- Cards serão carregados dinamicamente -->
+            </div>
+
+            <!-- Paginação de Contas -->
+            <div class="pagination-container">
+                <div class="pagination-info">
+                    Mostrando <span id="contasRange">0-0</span> de <span id="contasTotal">0</span> contas
+                </div>
+                <div class="pagination-controls" id="contasPagination">
+                    <!-- Controles de paginação serão gerados dinamicamente -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Análise IA Section -->
+        <section id="ia-section" class="content-section">
+            <div class="section-header">
+                <h2>Análise com Inteligência Artificial</h2>
+                <div class="section-actions">
+                    <button class="btn-secondary" onclick="retrainModel()">
+                        <i class="fas fa-sync-alt"></i> Retreinar Modelo
+                    </button>
+                </div>
+            </div>
+
+            <!-- Painel de Análise -->
+            <div class="ia-panel">
+                <div class="ia-form-section">
+                    <h3>Análise Individual</h3>
+                    <form id="iaAnalysisForm" onsubmit="analyzeAccount(event)">
+                        <div class="form-row">
+                            <div class="form-group">
+                                <label for="iaCpf">CPF do Cliente:</label>
+                                <input type="text" id="iaCpf" placeholder="000.000.000-00" 
+                                       maxlength="14" onkeyup="formatCPF(this)" required>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-brain"></i> Analisar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="ia-result-section" id="iaResultSection" style="display: none;">
+                    <h3>Resultado da Análise</h3>
+                    <div class="result-content" id="iaResultContent">
+                        <!-- Resultado será exibido aqui -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Estatísticas do Modelo -->
+            <div class="model-stats">
+                <h3>Estatísticas do Modelo</h3>
+                <div class="stats-grid">
+                    <div class="stat-item">
+                        <span class="stat-label">Precisão</span>
+                        <span class="stat-value" id="modelAccuracy">99.8%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Recall</span>
+                        <span class="stat-value" id="modelRecall">98.5%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">F1-Score</span>
+                        <span class="stat-value" id="modelF1">99.1%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Dados Treino</span>
+                        <span class="stat-value" id="trainingData">125k</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Outras seções serão adicionadas conforme necessário -->
+    </main>
+
+    <!-- Modals -->
+    <div id="modalOverlay" class="modal-overlay hidden" onclick="closeModal()">
+        <div class="modal-content" onclick="event.stopPropagation()">
+            <div class="modal-header">
+                <h3 id="modalTitle">Título do Modal</h3>
+                <button class="modal-close" onclick="closeModal()">
+                    <i class="fas fa-times"></i>
+                </button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                <!-- Conteúdo do modal -->
+            </div>
+            <div class="modal-footer" id="modalFooter">
+                <!-- Botões do modal -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.js"></script>
+    <script src="js/funcionario.js"></script>
+</body>
+</html> 
