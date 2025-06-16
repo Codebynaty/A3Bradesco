@@ -18,16 +18,12 @@
 
 ## 📋 **Features Principais**
 
-### 🧠 **Inteligência Artificial Avançada**
+### 🧠 **Inteligência Artificial Avançada - BINO**
 - **J48 Decision Tree** (Weka) para classificação de risco
 - **Análise temporal** de padrões de transação
 - **Sistema híbrido:** Machine Learning + Regras de negócio
 - **Fallback inteligente** quando IA não está disponível
 - **Score de risco configurável** (0-100, onde menor = maior risco)
-
-### 🤖 **BINO - Assistente Virtual**
-- Assistente virtual integrado com animações
-- Mensagens contextuais em tempo real
 - Feedback visual para análises de IA
 - Interface moderna e responsiva
 
@@ -43,50 +39,6 @@
 - Autenticação por tipo de usuário
 - Logs de auditoria completos
 
-### 🗃️ **Multi-Database Support**
-- **MySQL** (produção)
-- **PostgreSQL** (cloud)
-- **H2** (desenvolvimento)
-- Migração automática de schema
-
----
-
-## 🏗️ **Arquitetura do Sistema**
-
-```mermaid
-graph TB
-    subgraph "Frontend"
-        UI[Interface Web]
-        BINO[Assistente BINO]
-        DASH[Dashboard]
-    end
-    
-    subgraph "Backend Spring Boot"
-        API[REST API]
-        IA[Sistema de IA]
-        SCORE[Score Engine]
-    end
-    
-    subgraph "Machine Learning"
-        J48[J48 Decision Tree]
-        TEMPORAL[Análise Temporal]
-        RULES[Sistema de Regras]
-    end
-    
-    subgraph "Data Layer"
-        DB[(MySQL/PostgreSQL)]
-        H2[(H2 Dev)]
-    end
-    
-    UI --> API
-    BINO --> API
-    API --> IA
-    IA --> J48
-    IA --> TEMPORAL
-    IA --> RULES
-    API --> DB
-    API --> H2
-```
 
 ---
 
@@ -159,55 +111,6 @@ mvn spring-boot:run -Dspring.profiles.active=prod
 
 ---
 
-## 📊 **API Endpoints**
-
-### **Análise de IA**
-```http
-POST /api/ia/analisar-conta
-Content-Type: application/json
-
-{
-  "cpf": "12345678901"
-}
-```
-
-### **Análise Temporal**
-```http
-POST /api/ia/analisar-temporal
-Content-Type: application/json
-
-{
-  "cpf": "12345678901"
-}
-```
-
-### **Transações PIX**
-```http
-POST /api/pix/transacao
-Content-Type: application/json
-
-{
-  "valor": 1000.00,
-  "cpfOrigem": "12345678901",
-  "cpfDestino": "98765432100",
-  "descricao": "Pagamento"
-}
-```
-
-### **Denúncias**
-```http
-POST /api/denuncias
-Content-Type: application/json
-
-{
-  "cpfDenunciado": "12345678901",
-  "tipoGolpe": "PIX_FALSO",
-  "descricao": "Descrição da fraude"
-}
-```
-
----
-
 ## 🛠️ **Tecnologias Utilizadas**
 
 ### **Backend**
@@ -227,7 +130,6 @@ Content-Type: application/json
 ### **Banco de Dados**
 - **MySQL 8.0+** - Produção
 - **PostgreSQL** - Cloud deployment
-- **H2** - Desenvolvimento
 
 ### **DevOps**
 - **Maven** - Build e dependências
@@ -259,30 +161,6 @@ A3Bradesco/
 
 ---
 
-## 🔧 **Configuração Avançada**
-
-### **Parâmetros de IA** (`application.properties`)
-```properties
-# Configuração da IA
-bradesco.pix.ia.modelo=J48
-bradesco.pix.ia.arquivo-treinamento=suspect_accounts.arff
-bradesco.pix.ia.limite-confianca=0.7
-
-# Configuração de Score
-bradesco.pix.score.inicial=100
-bradesco.pix.score.limite-risco-alto=40
-bradesco.pix.score.limite-risco-medio=70
-```
-
-### **Configuração de Transações**
-```properties
-# Limites de risco
-bradesco.pix.transacao.valor-alto=10000.00
-bradesco.pix.transacao.dias-conta-nova=60
-bradesco.pix.transacao.limite-denuncias-padrao=5
-```
-
----
 
 ## 📈 **Métricas e Performance**
 
@@ -300,18 +178,13 @@ bradesco.pix.transacao.limite-denuncias-padrao=5
 
 ---
 
-## 🧪 **Testes e Qualidade**
+## 🧪 **Testes**
 
 ### **Dados de Teste Incluídos**
 - **CPFs de teste** com diferentes perfis de risco
 - **Transações simuladas** para demonstração
 - **Cenários de fraude** pré-configurados
 
-### **Qualidade do Código**
-- **Tratamento de erros** robusto
-- **Logs estruturados** para auditoria
-- **Validação completa** de entrada
-- **Documentação inline** extensiva
 
 ---
 
