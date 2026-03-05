@@ -170,12 +170,6 @@ A3Bradesco/
 - **Fallback Rate:** < 1%
 - **Precisão:** Alta (configurável)
 
-### **Performance**
-- **Throughput:** 1000+ transações/segundo
-- **Latência:** < 50ms (análise básica)
-- **Disponibilidade:** 99.9%
-- **Pool de Conexões:** 20-25 conexões simultâneas
-
 ---
 
 ## 🧪 **Testes**
@@ -234,12 +228,6 @@ docker run -p 8080:8080 bradesco-pix-monitor
 - **Desenvolvido por:** [@Codebynaty](https://github.com/Codebynaty)
 - **Email:** nataliaalcantara103@gmail.com
 - **Repositório:** [github.com/Codebynaty/A3Bradesco](https://github.com/Codebynaty/A3Bradesco)
-
----
-
-## 📄 **Licença**
-
-Este projeto está sob a licença MIT. Veja o arquivo [LICENSE](LICENSE) para mais detalhes.
 
 ---
 
