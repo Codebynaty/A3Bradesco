@@ -103,12 +103,6 @@ mvn spring-boot:run -Dspring.profiles.active=mysql
 mvn spring-boot:run -Dspring.profiles.active=prod
 ```
 
-### **4. Acesso**
-- **Interface Principal:** http://localhost:8080
-- **Cliente:** http://localhost:8080/cliente.html
-- **Funcionário:** http://localhost:8080/funcionario.html
-- **Console H2:** http://localhost:8080/h2-console
-
 ---
 
 ## 🛠️ **Tecnologias Utilizadas**
